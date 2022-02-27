@@ -9,6 +9,12 @@ class MoviesController < ApplicationController
     def index
       @movies = Movie.all
       sort = params[:sort]
+      @all_ratings = Movie.all_ratings
+
+      generatedRatings = {}
+      @all_ratings.each{ |rating| generatedRatings[rating] = 1 }
+
+      ratings = params[:ratings] || generatedRatings
       case sort
       when "movies_title"
         @movies = Movie.order(:title)
@@ -20,6 +26,8 @@ class MoviesController < ApplicationController
         @movies = Movie.all
         @sort = ''
       end
+      @ratings_to_show = ratings.keys
+      @movies = @movies.with_ratings(ratings.keys)
     end
   
     def new
