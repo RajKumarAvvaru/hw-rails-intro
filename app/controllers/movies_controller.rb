@@ -20,7 +20,7 @@ class MoviesController < ApplicationController
     @all_ratings.each{ |rating| generatedRatings[rating] = 1 }
     
     ratings = {}
-    
+    @all_ratings.each{ |rating| ratings[rating] = 1 }
     if(submit_clicked)
       if(!params[:ratings])
         if(session[:ratings])
@@ -34,7 +34,6 @@ class MoviesController < ApplicationController
       end
     elsif(params[:ratings]) 
       ratings = params[:ratings]
-      
       session[:ratings] = ratings
     elsif(session[:ratings])
       ratings = session[:ratings]
@@ -61,7 +60,7 @@ class MoviesController < ApplicationController
         @sort = ''
     end
     
-    @ratings_to_show = ratings == generatedRatings ? [] : ratings.keys
+    @ratings_to_show = ratings == generatedRatings ? @all_ratings : ratings.keys
     @movies = @movies.with_ratings(ratings.keys)
   end
 
