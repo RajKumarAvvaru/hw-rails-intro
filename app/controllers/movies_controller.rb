@@ -23,11 +23,14 @@ class MoviesController < ApplicationController
     
     if(submit_clicked)
       if(!params[:ratings])
-        ratings = generatedRatings
-        session[:ratings] = nil
+        if(session[:ratings])
+          ratings = session[:ratings]
+        else
+          ratings = generatedRatings
+        end
       else
         ratings = params[:ratings]
-        session[:ratings] = ratings
+      session[:ratings] = ratings
       end
     elsif(params[:ratings]) 
       ratings = params[:ratings]
